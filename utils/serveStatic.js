@@ -8,16 +8,14 @@ export async function serveStatic(req, res, baseDir) {
     const publicDir = path.join(baseDir, 'public');
     const filePath = path.join(
         publicDir,
-         req.url === '/' ? 'index.html' : req.url);
+        req.url === '/' ? 'index.html' : req.url);
 
-        
+
+    const ext = path.extname(filePath);
+    const contentType = getContentType(ext);
+
     try {
         const content = await fs.readFile(filePath);
-
-        const ext = path.extname(filePath);
-
-        const contentType = getContentType(ext);
-
         sendResponse(res, 200, contentType, content)
     } catch (error) {
         console.log(error)
